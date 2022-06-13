@@ -1,0 +1,27 @@
+name: LEDHat CI
+
+on: [push]  # yamllint disable-line rule:truthy
+
+jobs:
+  yamllint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: yaml-lint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          yamllint_comment: true
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  remarklint:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: remark-lint
+        uses: "docker://pipelinecomponents/remark-lint:latest"
+        continue-on-error: true
+        with:
+          # yamllint disable rule:line-length
+          args: "remark --no-stdout --color --frail --use preset-lint-recommended ."
+          # yamllint enable rule:line-length
