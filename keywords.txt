@@ -1,0 +1,24 @@
+#######################################
+# Syntax Coloring Map For LEDHat
+#######################################
+
+#######################################
+# Datatypes
+#######################################
+
+LEDHat	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+writeFrame	KEYWORD2
+clear	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+FRAME_HEIGHT LITERAL1
+FRAME_WIDTH LITERAL1
+NUM_BYTES LITERAL1
