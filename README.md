@@ -2,6 +2,8 @@
 
 Arduino library for LED hat.
 
+To avoid using the app and Bluetooth controller that comes with the hat, you can implement your own custom animations.
+
 ![](images/led_cap.jpg)
 
 ## Setup
@@ -21,8 +23,12 @@ To use the library in your Arduino sketches, include the library using
 ```
 
 ## Examples
+
 ### LEDHat_demos.ino
 A series of simple demos demonstrating scanning and blinking.
+
+### LEDHat_Snake.ino
+An AI playing a game of Snake.
 
 ## Constants
 
@@ -33,6 +39,7 @@ A series of simple demos demonstrating scanning and blinking.
 | `NUM_BYTES`    | Number of bytes per frame | 72    |
 
 ## Functions
+
 ### Constructor
 `LEDHat hat(brightness);` creates an instance of LEDHat with name `hat` with the specified brightness, where `brightness` is an integer in the range `[160 168]`.
 
