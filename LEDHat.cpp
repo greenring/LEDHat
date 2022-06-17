@@ -15,6 +15,14 @@ LEDHat::LEDHat(int brightness)
   Serial.begin(38400);    // opens serial port, sets data rate to 38400 bps
 }
 
+void LEDHat::zeroFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH]){
+  for (int i = 0; i < FRAME_HEIGHT; i++) {
+    for (int j = 0; j < FRAME_WIDTH; j++) {
+      frame[i][j] = 0;
+    }
+  }
+}
+
 void LEDHat::writeFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH]){
   int idxByte;
   int idxBit;
@@ -47,13 +55,21 @@ void LEDHat::writeFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH]){
 
 void LEDHat::clear(){
   bool frame[FRAME_HEIGHT][FRAME_WIDTH];
-  for (int i = 0; i < FRAME_HEIGHT; i++) {
-    for (int j = 0; j < FRAME_WIDTH; j++) {
-      frame[i][j] = 0;
-    }
-  }
+  zeroFrame(frame);
   
   writeFrame(frame);
+}
+
+void LEDHat::blink(bool frame[FRAME_HEIGHT][FRAME_WIDTH], int blinkDelay, int numBlinks){
+
+  for (int i = 0; i < numBlinks; i++) {
+    clear();
+	
+    delay(blinkDelay);
+    writeFrame(frame);
+    delay(blinkDelay);
+  }
+
 }
 
 // Byte index.

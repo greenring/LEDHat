@@ -5,6 +5,8 @@
 #include <LEDHat.h>
 int brightness = 168;  // Brightness, specified in range [160, 168]
 LEDHat hat(brightness);
+bool frame[FRAME_HEIGHT][FRAME_WIDTH];
+
 int frameDelay = 32;
 
 int snake[FRAME_HEIGHT][FRAME_WIDTH];
@@ -18,6 +20,7 @@ int gameStatus;
 // Setup.
 void setup() {
   randomSeed(analogRead(0));
+  hat.zeroFrame(frame);
 
   gameStatus = 0;
   initializeSnake();
@@ -41,7 +44,6 @@ void loop() {
 
     if (AI_willCrash(snakeDirection)) {
       direction = (snakeDirection + 1) % 4;
-
       if (AI_willCrash(direction)) {
         turnSnake(-1);
       } else {
@@ -89,7 +91,8 @@ void spawnFruit() {
   fruit[0] = i;
   fruit[1] = j;
 
-  drawFrame();
+  updateFrame();
+  hat.writeFrame(frame);
 }
 
 void turnSnake(int turn) {
@@ -140,7 +143,8 @@ bool moveSnake() {
     spawnFruit();
   }
 
-  drawFrame();
+  updateFrame();
+  hat.writeFrame(frame);
   return false;
 }
 
@@ -175,20 +179,13 @@ void gameOver() {
   int blinkDelay = 128;
   int numBlinks = 10;
 
-  for (int i = 0; i < numBlinks; i++) {
-    hat.clear();
-    delay(blinkDelay);
-    drawFrame();
-    delay(blinkDelay);
-  }
+  hat.blink(frame, blinkDelay, numBlinks);
 
   hat.clear();
   delay(2 * blinkDelay);
 }
 
-void drawFrame() {
-  bool frame[FRAME_HEIGHT][FRAME_WIDTH];
-  
+void updateFrame() {
   for (int i = 0; i < FRAME_HEIGHT; i++) {
     for (int j = 0; j < FRAME_WIDTH; j++) {
       frame[i][j] = snake[i][j] > 0;
@@ -198,8 +195,6 @@ void drawFrame() {
   int i = fruit[0];
   int j = fruit[1];
   frame[i][j] = 1;
-
-  hat.writeFrame(frame);
 }
 
 int smod(int a, int b) {
