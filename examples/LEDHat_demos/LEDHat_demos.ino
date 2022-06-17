@@ -6,10 +6,12 @@
 int brightness = 168; // Brightness, specified in range [160, 168]
 LEDHat hat(brightness);
 
+bool frame[FRAME_HEIGHT][FRAME_WIDTH];
+
 // Default values.
 void demoScanHorizontal(int frameDelay = 20);
 void demoScanVertical(int frameDelay = 20);
-void demoBlink(int frameDelay = 300);
+void demoBlink(int blinkDelay = 300, int numBlinks = 10);
 
 // Setup.
 void setup() {
@@ -32,13 +34,7 @@ void loop() {
 void demoScanVertical(int frameDelay) {
   hat.clear();
 
-  bool frame[FRAME_HEIGHT][FRAME_WIDTH];
-  for (int i = 0; i < FRAME_HEIGHT; i++) {
-    for (int j = 0; j < FRAME_WIDTH; j++) {
-      frame[i][j] = 0;
-    }
-  }
-
+  hat.zeroFrame(frame);
   for (int i = 0; i < FRAME_HEIGHT; i++) {
     for (int j = 0; j < FRAME_WIDTH; j++) {
       frame[i][j] = 1;
@@ -52,13 +48,7 @@ void demoScanVertical(int frameDelay) {
 void demoScanHorizontal(int frameDelay) {
   hat.clear();
 
-  bool frame[FRAME_HEIGHT][FRAME_WIDTH];
-  for (int i = 0; i < FRAME_HEIGHT; i++) {
-    for (int j = 0; j < FRAME_WIDTH; j++) {
-      frame[i][j] = 0;
-    }
-  }
-
+  hat.zeroFrame(frame);
   for (int j = 0; j < FRAME_WIDTH; j++) {
     for (int i = 0; i < FRAME_HEIGHT; i++) {
       frame[i][j] = 1;
@@ -69,29 +59,15 @@ void demoScanHorizontal(int frameDelay) {
 }
 
 // Demo: Blink
-void demoBlink(int frameDelay) {
+void demoBlink(int blinkDelay, int numBlinks) {
   hat.clear();
 
-  bool frame[FRAME_HEIGHT][FRAME_WIDTH];
-  for (int i = 0; i < FRAME_HEIGHT; i++) {
-    for (int j = 0; j < FRAME_WIDTH; j++) {
-      frame[i][j] = 0;
+  hat.zeroFrame(frame);
+  for (int j = 0; j < FRAME_WIDTH; j++) {
+    for (int i = 0; i < FRAME_HEIGHT; i++) {
+      frame[i][j] = 1;
     }
   }
 
-  int numBlinks = 5;
-
-  for (int k = 0; k < numBlinks; k++) {
-    for (int j = 0; j < FRAME_WIDTH; j++) {
-      for (int i = 0; i < FRAME_HEIGHT; i++) {
-        frame[i][j] = 1;
-      }
-    }
-
-    hat.writeFrame(frame);
-    delay(frameDelay);
-
-    hat.clear();
-    delay(frameDelay);
-  }
+  hat.blink(frame, blinkDelay, numBlinks);
 }

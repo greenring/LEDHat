@@ -9,8 +9,10 @@ class LEDHat
 {
   public:
     LEDHat(int brightness);
+    void zeroFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH]);
     void writeFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH]);
     void clear();
+    void blink(bool frame[FRAME_HEIGHT][FRAME_WIDTH], int blinkDelay, int numBlinks);
 
   private:
     int byteIndex(int i, int j);

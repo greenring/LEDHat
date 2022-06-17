@@ -43,8 +43,14 @@ An AI playing a game of Snake.
 ### Constructor
 `LEDHat hat(brightness);` creates an instance of LEDHat with name `hat` with the specified brightness, where `brightness` is an integer in the range `[160 168]`.
 
-### Write Frame
-`writeFrame(frame);` writes the specified frame to the hat, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array.
+### Zero Frame
+`hat.zeroFrame(frame);` sets `frame` to an array of zeros, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array.
 
-### Clear Frame
-`clear();` switches off all LEDs of the hat.
+### Write Frame
+`hat.writeFrame(frame);` writes the specified frame to the hat, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array.
+
+### Clear
+`hat.clear();` switches off all LEDs of the hat.
+
+### Blink
+`hat.blink(frame,blinkDelay,numBlinks);` blinks the specified frame on the hat, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array, blinkDelay is an integer specifying the delay between display in milliseconds (ms), and numBlinks is an integer specifying the number of blinks.
