@@ -8,11 +8,6 @@ LEDHat hat(brightness);
 
 bool frame[FRAME_HEIGHT][FRAME_WIDTH];
 
-// Default values.
-void demoScanHorizontal(int frameDelay = 20);
-void demoScanVertical(int frameDelay = 20);
-void demoBlink(int blinkDelay = 300, int numBlinks = 10);
-
 // Setup.
 void setup() {
 
@@ -20,13 +15,20 @@ void setup() {
 
 // Loop.
 void loop() {
-  demoScanVertical();
+  int frameDelay;
+  int blinkDelay;
+  int numBlinks;
+
+  frameDelay = 20;
+  demoScanVertical(frameDelay);
   delay(500);
 
-  demoScanHorizontal();
+  frameDelay = 20;
+  demoScanHorizontal(frameDelay);
   delay(500);
 
-  demoBlink();
+  blinkDelay = 10;
+  demoBlink(blinkDelay, numBlinks);
   delay(500);
 }
 

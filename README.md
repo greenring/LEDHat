@@ -27,8 +27,12 @@ To use the library in your Arduino sketches, include the library using
 ### LEDHat_demos.ino
 A series of simple demos demonstrating scanning and blinking.
 
+### LEDHat_ScrollingText.ino
+A demo showing scrolling text.
+
 ### LEDHat_Snake.ino
 An AI playing a game of Snake.
+
 
 ## Constants
 
@@ -53,4 +57,16 @@ An AI playing a game of Snake.
 `hat.clear();` switches off all LEDs of the hat.
 
 ### Blink
-`hat.blink(frame,blinkDelay,numBlinks);` blinks the specified frame on the hat, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array, blinkDelay is an integer specifying the delay between display in milliseconds (ms), and numBlinks is an integer specifying the number of blinks.
+`hat.blink(frame,blinkDelay,numBlinks);` blinks the specified frame on the hat, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array, blinkDelay is an integer specifying the delay between blinks in milliseconds (ms), and numBlinks is an integer specifying the number of blinks.
+
+### Add String
+`addString(frame,str,x,y);` adds the specified string to the frame at row `x` and column `y`, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array, `str` is a string, and `x` and `y` are integers.
+
+### Scroll Text
+`scrollText(frame,str,scrollDelay);` scrolls the specified text on the hat, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array, `str` is a string, and `scrollDelay` is an integer specifying the delay between display updates in milliseconds (ms).
+
+## Credits
+### Fonts
+Font based on:
+ * https://github.com/dhepper/font8x8
+ * http://dimensionalrift.homelinux.net/combuster/mos3/?p=viewsource&file=/modules/gfx/font8_8.asm
