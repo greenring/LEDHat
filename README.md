@@ -47,8 +47,11 @@ An AI playing a game of Snake.
 ### Constructor
 `LEDHat hat(brightness);` creates an instance of LEDHat with name `hat` with the specified brightness, where `brightness` is an integer in the range `[160 168]`.
 
-### Zero Frame
-`hat.zeroFrame(frame);` sets `frame` to an array of zeros, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array.
+### Frame Zeros
+`hat.frameZeros(frame);` sets `frame` to an array of zeros, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array.
+
+### Frame Ones
+`hat.frameOnes(frame);` sets `frame` to an array of ones, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array.
 
 ### Write Frame
 `hat.writeFrame(frame);` writes the specified frame to the hat, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array.
@@ -56,8 +59,8 @@ An AI playing a game of Snake.
 ### Clear
 `hat.clear();` switches off all LEDs of the hat.
 
-### Blink
-`hat.blink(frame,blinkDelay,numBlinks);` blinks the specified frame on the hat, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array, blinkDelay is an integer specifying the delay between blinks in milliseconds (ms), and numBlinks is an integer specifying the number of blinks.
+### Blink Frame
+`hat.blinkFrame(frame,blinkDelay,numBlinks);` blinks the specified frame on the hat, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array, blinkDelay is an integer specifying the delay between blinks in milliseconds (ms), and numBlinks is an integer specifying the number of blinks.
 
 ### Add String
 `addString(frame,str,x,y);` adds the specified string to the frame at row `x` and column `y`, where `frame` is a `FRAME_HEIGHT`-by-`FRAME_WIDTH` Boolean array, `str` is a string, and `x` and `y` are integers.
