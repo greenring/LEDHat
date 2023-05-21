@@ -1,8 +1,9 @@
 #include "Arduino.h"
 #include "LEDHat.h"
 #include "font8x8.h"
+#include "HardwareSerial.h"
 
-LEDHat::LEDHat(int brightness)
+LEDHat::LEDHat(int brightness /* = 168 */)
 {
   _brightness = brightness;
 
@@ -13,13 +14,39 @@ LEDHat::LEDHat(int brightness)
   _foot[2] = brightness;
   _foot[3] = brightness + 3;
 
-  Serial.begin(38400);    // opens serial port, sets data rate to 38400 bps
+  HardwareSerial SerialPort(2);  //if using UART2
+  Serial.begin(38400, SERIAL_8N1, 16, 17);    // opens serial port, sets data rate to 38400 bps
+    
+  touchPin = esp_sleep_get_touchpad_wakeup_status();
+  
+  pinMode(BUTTON_RED, INPUT_PULLUP);
+  pinMode(BUTTON_YELLOW, INPUT_PULLUP);
+	
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
+	
+  touchAttachInterrupt(BUTTON_RED, callbackRed, THRESHOLD);
+  touchAttachInterrupt(BUTTON_YELLOW, callbackYellow, THRESHOLD);
+  //touchSleepWakeUpEnable(BUTTON_YELLOW,THRESHOLD);
+  esp_sleep_enable_touchpad_wakeup();
+  
+  if (touchPin == BUTTON_RED_T) {
+    sleep();
+  }
 }
 
-void LEDHat::zeroFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH]) {
+void LEDHat::frameZeros(bool frame[FRAME_HEIGHT][FRAME_WIDTH]) {
   for (int i = 0; i < FRAME_HEIGHT; i++) {
     for (int j = 0; j < FRAME_WIDTH; j++) {
       frame[i][j] = 0;
+    }
+  }
+}
+
+void LEDHat::frameOnes(bool frame[FRAME_HEIGHT][FRAME_WIDTH]) {
+  for (int i = 0; i < FRAME_HEIGHT; i++) {
+    for (int j = 0; j < FRAME_WIDTH; j++) {
+      frame[i][j] = 1;
     }
   }
 }
@@ -56,8 +83,7 @@ void LEDHat::writeFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH]) {
 
 void LEDHat::clear() {
   bool frame[FRAME_HEIGHT][FRAME_WIDTH];
-  zeroFrame(frame);
-
+  frameZeros(frame);
   writeFrame(frame);
 }
 
@@ -81,20 +107,19 @@ void LEDHat::addString(bool frame[FRAME_HEIGHT][FRAME_WIDTH], String str, int x,
   }
 }
 
-void LEDHat::scrollText(bool frame[FRAME_HEIGHT][FRAME_WIDTH], String str, int scrollDelay) {
+void LEDHat::scrollText(bool frame[FRAME_HEIGHT][FRAME_WIDTH], String str, int scrollDelay /* = 25 */) {
   for (int y = FRAME_WIDTH; y >= -_font.pixelWidth(str); y--) {
-    zeroFrame(frame);
+    frameZeros(frame);
     addString(frame, str, 2, y);
     writeFrame(frame);
     delay(scrollDelay);
   }
 }
 
-void LEDHat::blink(bool frame[FRAME_HEIGHT][FRAME_WIDTH], int blinkDelay, int numBlinks) {
+void LEDHat::blinkFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH], int blinkDelay, int numBlinks) {
 
   for (int i = 0; i < numBlinks; i++) {
     clear();
-
     delay(blinkDelay);
     writeFrame(frame);
     delay(blinkDelay);
@@ -129,4 +154,20 @@ byte LEDHat::checksum(byte data[NUM_BYTES]) {
     sum += data[i] % 256;
   }
   return sum;
+}
+
+void LEDHat::callbackYellow(){
+	
+}
+
+void LEDHat::callbackRed() {
+  // Race condition? Might go into sleep before setting up interrupts.
+  touchAttachInterrupt(BUTTON_RED, callbackRed, THRESHOLD);
+  touchAttachInterrupt(BUTTON_YELLOW, callbackYellow, THRESHOLD);
+  esp_sleep_enable_touchpad_wakeup();
+  esp_deep_sleep_start();
+}
+
+void LEDHat::sleep() {
+  esp_deep_sleep_start();
 }

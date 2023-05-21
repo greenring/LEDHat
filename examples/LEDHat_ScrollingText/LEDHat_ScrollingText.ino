@@ -1,22 +1,26 @@
 // LEDHat - Arduino library for LED hat.
 //
-// Connect VCC to 3.3v. Connect DATA to TX. Connect GND to G.
+// This example demonstrates the usage of the LEDHat library to scroll text across an LED baseball cap.
+// Press the yellow button to wake and the red button to sleep.
+//
+// Wiring:
+//     LEDs:
+//         Connect VCC to 3.3v. Connect DATA to TX. Connect GND to G.
+//     Buttons:
+//         Connect yellow to 2 (T2). Connect red to 4 (T0).
 
 #include <LEDHat.h>
 
-int brightness = 168; // Brightness, specified in range [160, 168]
-LEDHat hat(brightness);
-
-bool frame[FRAME_HEIGHT][FRAME_WIDTH];
+LEDHat hat;                                 // Create an instance of the LEDHat class
+bool frame[FRAME_HEIGHT][FRAME_WIDTH];      // Create a frame buffer for storing LED states
 
 void setup() {
-  hat.clear();
-  hat.zeroFrame(frame);
+  hat.clear();                              // Clear the LED display
+  hat.frameZeros(frame);                    // Initialize the frame buffer with zeros
 }
 
 void loop() {
-  String str = "Hello, world!";
-  int scrollDelay = 32;
-
-  hat.scrollText(frame, str, scrollDelay);
+  delay(500);
+  String str = "Hello, World!";             // Define the text to scroll
+  hat.scrollText(frame, str);               // Scroll the text across the LED display
 }

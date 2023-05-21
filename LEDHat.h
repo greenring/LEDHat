@@ -6,18 +6,27 @@
 #define FRAME_HEIGHT 12
 #define FRAME_WIDTH 48
 #define NUM_BYTES 72
+#define BUTTON_RED 4
+#define BUTTON_YELLOW 2
+#define BUTTON_RED_T 0
+#define THRESHOLD 10
 
 class LEDHat
 {
   public:
-    LEDHat(int brightness);
-    void zeroFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH]);
+    LEDHat(int brightness = 168);
+    void frameZeros(bool frame[FRAME_HEIGHT][FRAME_WIDTH]);
+	void frameOnes(bool frame[FRAME_HEIGHT][FRAME_WIDTH]);
     void writeFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH]);
     void clear();
-    void blink(bool frame[FRAME_HEIGHT][FRAME_WIDTH], int blinkDelay, int numBlinks);
+    void blinkFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH], int blinkDelay, int numBlinks);
 
     void addString(bool frame[FRAME_HEIGHT][FRAME_WIDTH], String str, int x, int y);
-    void scrollText(bool frame[FRAME_HEIGHT][FRAME_WIDTH], String str, int scrollDelay);
+    void scrollText(bool frame[FRAME_HEIGHT][FRAME_WIDTH], String str, int scrollDelay = 25);
+
+    void sleep();
+	
+	touch_pad_t touchPin;
 
   private:
     int byteIndex(int i, int j);
@@ -32,6 +41,9 @@ class LEDHat
     bool _frame[FRAME_HEIGHT][FRAME_WIDTH];
 	
 	Font _font;
+	
+	static void callbackYellow();
+	static void callbackRed();
 };
 
 #endif
