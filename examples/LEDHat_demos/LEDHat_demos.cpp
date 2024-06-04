@@ -8,10 +8,15 @@
 // Buttons:
 //    Connect yellow to 2 (T2). Connect red to 4 (T0).
 
-#include <LEDHat.h>
-LEDHat hat;
+#include <Arduino.h>
+#include "LEDHat.h"
 
+LEDHat hat;
 bool frame[FRAME_HEIGHT][FRAME_WIDTH];
+
+void demoScanVertical(int frameDelay);
+void demoScanHorizontal(int frameDelay);
+void demoBlink(int blinkDelay, int numBlinks);
 
 // Setup.
 void setup() {

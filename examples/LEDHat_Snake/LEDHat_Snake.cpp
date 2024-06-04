@@ -9,7 +9,9 @@
 //     Buttons:
 //         Connect yellow to 2 (T2). Connect red to 4 (T0).
 
-#include <LEDHat.h>
+#include <Arduino.h>
+#include "LEDHat.h"
+
 LEDHat hat;
 bool frame[FRAME_HEIGHT][FRAME_WIDTH];
 
@@ -22,6 +24,17 @@ int snakeHead[2];
 int snakeLength;
 int snakeDirection;
 int gameStatus;
+
+void initializeSnake();
+void spawnFruit();
+void turnSnake(int turn);
+bool moveSnake();
+bool isDead();
+bool AI_canSeeFruit();
+bool AI_willCrash(int direction);
+void gameOver();
+void updateFrame();
+int smod(int a, int b);
 
 // Setup.
 void setup() {
