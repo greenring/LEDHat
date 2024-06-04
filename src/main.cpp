@@ -9,7 +9,8 @@
 //     Buttons:
 //         Connect yellow to 2 (T2). Connect red to 4 (T0).
 
-#include <LEDHat.h>
+#include <Arduino.h>
+#include "LEDHat.h"
 
 LEDHat hat;                                 // Create an instance of the LEDHat class
 bool frame[FRAME_HEIGHT][FRAME_WIDTH];      // Create a frame buffer for storing LED states
