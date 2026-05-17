@@ -16,7 +16,7 @@ class LEDHat
   public:
     LEDHat(int brightness = 168);
     void frameZeros(bool frame[FRAME_HEIGHT][FRAME_WIDTH]);
-	void frameOnes(bool frame[FRAME_HEIGHT][FRAME_WIDTH]);
+    void frameOnes(bool frame[FRAME_HEIGHT][FRAME_WIDTH]);
     void writeFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH]);
     void clear();
     void blinkFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH], int blinkDelay, int numBlinks);
