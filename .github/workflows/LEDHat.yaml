@@ -1,12 +1,12 @@
 name: LEDHat CI
 
-on: [push]  # yamllint disable-line rule:truthy
+on: [push, pull_request]  # yamllint disable-line rule:truthy
 
 jobs:
   yamllint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: yaml-lint
         uses: ibiqlik/action-yamllint@v3
         with:
@@ -14,14 +14,22 @@ jobs:
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  remarklint:
-    runs-on: ubuntu-18.04
+  build:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: remark-lint
-        uses: "docker://pipelinecomponents/remark-lint:latest"
-        continue-on-error: true
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          # yamllint disable rule:line-length
-          args: "remark --no-stdout --color --frail --use preset-lint-recommended ."
-          # yamllint enable rule:line-length
+          python-version: '3.x'
+      - name: Cache PlatformIO
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio/.cache
+            ~/.platformio/packages
+            ~/.platformio/platforms
+          key: ${{ runner.os }}-pio-${{ hashFiles('platformio.ini') }}
+      - name: Install PlatformIO
+        run: pip install --upgrade platformio
+      - name: Build
+        run: pio run

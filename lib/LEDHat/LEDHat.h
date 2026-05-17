@@ -39,9 +39,10 @@ class LEDHat
     int _head;
     byte _foot[4];
     bool _frame[FRAME_HEIGHT][FRAME_WIDTH];
-	
+
 	Font _font;
-	
+
+	static volatile bool _sleepRequested;
 	static void callbackYellow();
 	static void callbackRed();
 };

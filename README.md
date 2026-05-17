@@ -24,14 +24,17 @@ To use the library in your Arduino sketches, include the library using
 
 ## Examples
 
-### LEDHat_demos.ino
+### LEDHat_demos
 A series of simple demos demonstrating scanning and blinking.
 
-### LEDHat_ScrollingText.ino
-A demo showing scrolling text.
+### LEDHat_ScrollingText
+Scrolls text across the hat. Accepts new text over the Dabble Terminal.
 
-### LEDHat_Snake.ino
+### LEDHat_Snake_AI
 An AI playing a game of Snake.
+
+### LEDHat_Snake_GamePad
+Snake controlled from the Dabble GamePad.
 
 
 ## Constants

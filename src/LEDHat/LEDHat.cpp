@@ -3,6 +3,8 @@
 #include "font8x8.h"
 #include "HardwareSerial.h"
 
+volatile bool LEDHat::_sleepRequested = false;
+
 LEDHat::LEDHat(int brightness /* = 168 */)
 {
   _brightness = brightness;
@@ -79,6 +81,11 @@ void LEDHat::writeFrame(bool frame[FRAME_HEIGHT][FRAME_WIDTH]) {
   Serial.write(_head);
   Serial.write(data, NUM_BYTES);
   Serial.write(_foot, 4);
+
+  if (_sleepRequested) {
+    _sleepRequested = false;
+    sleep();
+  }
 }
 
 void LEDHat::clear() {
@@ -156,16 +163,11 @@ byte LEDHat::checksum(byte data[NUM_BYTES]) {
   return sum;
 }
 
-void LEDHat::callbackYellow(){
-	
+void IRAM_ATTR LEDHat::callbackYellow() {
 }
 
-void LEDHat::callbackRed() {
-  // Race condition? Might go into sleep before setting up interrupts.
-  touchAttachInterrupt(BUTTON_RED, callbackRed, THRESHOLD);
-  touchAttachInterrupt(BUTTON_YELLOW, callbackYellow, THRESHOLD);
-  esp_sleep_enable_touchpad_wakeup();
-  esp_deep_sleep_start();
+void IRAM_ATTR LEDHat::callbackRed() {
+  _sleepRequested = true;
 }
 
 void LEDHat::sleep() {

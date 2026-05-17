@@ -21,6 +21,7 @@ int Font::numTrailingColumns(char character) {
     }
     N++;
   }
+  return N;
 }
 
 int Font::pixelWidth(char character) {
@@ -42,13 +43,14 @@ int Font::pixelWidth(String str) {
 }
 
 void Font::getCharacter(bool glyph[8][8], char character) {
-  if (character > 128) {
-    character = '?';
+  unsigned char c = static_cast<unsigned char>(character);
+  if (c >= 128) {
+    c = '?';
   }
 
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
-      glyph[i][j] = bitRead(_fontMap[character][i], j);
+      glyph[i][j] = bitRead(_fontMap[c][i], j);
     }
   }
 }
